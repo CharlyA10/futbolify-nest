@@ -9,12 +9,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const users_module_1 = require("./users/users.module");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule]
+        imports: [
+            config_1.ConfigModule.forRoot({
+                envFilePath: `.${process.env.NODE_ENV}.env`,
+                isGlobal: true,
+            }),
+            users_module_1.UsersModule,
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
