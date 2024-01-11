@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  # Nombre del contenedor
+  charly_pg:
+    image: postgres:15.1
+    # Nombre del contenedor
+    container_name: charly_pg
+    restart: always
+    environment:
+    # Nombre de la base de datos
+      POSTGRES_DB: charlydb
+      POSTGRES_USER: charly
+      POSTGRES_PASSWORD: charly2004
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
