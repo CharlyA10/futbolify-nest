@@ -10,6 +10,8 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const users_module_1 = require("./users/users.module");
 const config_1 = require("@nestjs/config");
+const data_source_1 = require("./config/data.source");
+const typeorm_1 = require("@nestjs/typeorm");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -20,6 +22,7 @@ exports.AppModule = AppModule = __decorate([
                 envFilePath: `.${process.env.NODE_ENV}.env`,
                 isGlobal: true,
             }),
+            typeorm_1.TypeOrmModule.forRoot({ ...data_source_1.DataSourceConfig }),
             users_module_1.UsersModule,
         ],
     })
