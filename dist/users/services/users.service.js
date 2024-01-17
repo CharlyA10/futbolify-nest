@@ -17,17 +17,80 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const users_entity_1 = require("../entities/users.entity");
+const error_manager_1 = require("../../utils/error.manager");
 let UsersService = class UsersService {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
     async createUser(body) {
         try {
-            body.password = await bcrypt.hash(body.password, +process.env.HASH_SALT);
             return await this.userRepository.save(body);
         }
         catch (error) {
-            throw ErrorManager.createSignatureError(error.message);
+            throw new Error(error);
+        }
+    }
+    async findUsers() {
+        try {
+            const users = await this.userRepository.find();
+            if (users.length === 0) {
+                throw new error_manager_1.ErrorManager({
+                    type: 'BAD_REQUEST',
+                    message: 'No se pudo actualizar'
+                });
+            }
+            return users;
+        }
+        catch (error) {
+            throw error_manager_1.ErrorManager.createSignatureError(error.message);
+        }
+    }
+    async findUserById(id) {
+        try {
+            const user = await this.userRepository
+                .createQueryBuilder('user')
+                .where({ id })
+                .getOne();
+            if (!user) {
+                throw new error_manager_1.ErrorManager({
+                    type: 'BAD_REQUEST',
+                    message: 'No se pudo actualizar'
+                });
+            }
+            return user;
+        }
+        catch (error) {
+            throw error_manager_1.ErrorManager.createSignatureError(error.message);
+        }
+    }
+    async updateUser(body, id) {
+        try {
+            const user = await this.userRepository.update(id, body);
+            if (user.affected === 0) {
+                throw new error_manager_1.ErrorManager({
+                    type: 'BAD_REQUEST',
+                    message: 'No encuentro el resultado',
+                });
+            }
+            return user;
+        }
+        catch (error) {
+            throw error_manager_1.ErrorManager.createSignatureError(error.message);
+        }
+    }
+    async deleteUser(id) {
+        try {
+            const user = await this.userRepository.delete(id);
+            if (user.affected === 0) {
+                throw new error_manager_1.ErrorManager({
+                    type: 'BAD_REQUEST',
+                    message: 'No se pudo borrar',
+                });
+            }
+            return user;
+        }
+        catch (error) {
+            throw error_manager_1.ErrorManager.createSignatureError(error.message);
         }
     }
 };

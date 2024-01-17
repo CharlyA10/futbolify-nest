@@ -8,3 +8,12 @@ export declare class UserDTO {
     password: string;
     role: ROLES;
 }
+export declare class UserUpdateDTO {
+    firstName: string;
+    lastName: string;
+    age: number;
+    email: string;
+    username: string;
+    password: string;
+    role: ROLES;
+}
