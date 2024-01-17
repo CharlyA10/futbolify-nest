@@ -12,6 +12,7 @@ const users_module_1 = require("./users/users.module");
 const config_1 = require("@nestjs/config");
 const data_source_1 = require("./config/data.source");
 const typeorm_1 = require("@nestjs/typeorm");
+const projescts_module_1 = require("./projects/projescts.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -24,6 +25,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             typeorm_1.TypeOrmModule.forRoot({ ...data_source_1.DataSourceConfig }),
             users_module_1.UsersModule,
+            projescts_module_1.ProjectsModule,
         ],
     })
 ], AppModule);
